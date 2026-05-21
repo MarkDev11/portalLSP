@@ -71,29 +71,37 @@
             <div class="grid md:grid-cols-2 gap-px bg-ink-200 border border-ink-200">
                 <!-- Visi -->
                 <div class="reveal bg-white p-10 md:p-12">
-                    <div class="w-12 h-12 flex items-center justify-center mb-8 bg-gray-50">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: var(--color-accent);"><path stroke-linecap="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <div class="flex gap-6">
+                        <div class="w-12 h-12 flex items-center justify-center flex-shrink-0 bg-gray-50">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: var(--color-accent);"><path stroke-linecap="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-ink-900 mb-4">Visi</h3>
+                            <p class="text-ink-500 leading-relaxed">
+                                {!! $tentangKami->visi_content !!}
+                            </p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-ink-900 mb-4">Visi</h3>
-                    <p class="text-ink-500 leading-relaxed">
-                        {!! $tentangKami->visi_content !!}
-                    </p>
                 </div>
                 
                 <!-- Misi -->
                 <div class="reveal bg-white p-10 md:p-12 delay-100">
-                    <div class="w-12 h-12 flex items-center justify-center mb-8 bg-gray-50">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: var(--color-accent);"><path stroke-linecap="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+                    <div class="flex gap-6">
+                        <div class="w-12 h-12 flex items-center justify-center flex-shrink-0 bg-gray-50">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: var(--color-accent);"><path stroke-linecap="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-ink-900 mb-4">Misi</h3>
+                            <ul class="space-y-3 text-ink-500 leading-relaxed">
+                                @foreach($tentangKami->misi_items as $misi)
+                                    <li class="flex gap-3">
+                                        <span class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background-color: var(--color-accent); opacity: 0.6;"></span>
+                                        <span>{{ $misi }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-ink-900 mb-4">Misi</h3>
-                    <ul class="space-y-3 text-ink-500 leading-relaxed">
-                        @foreach($tentangKami->misi_items as $misi)
-                            <li class="flex gap-3">
-                                <span class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background-color: var(--color-accent); opacity: 0.6;"></span>
-                                <span>{{ $misi }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
                 </div>
             </div>
         </div>
