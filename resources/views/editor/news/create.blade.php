@@ -1,0 +1,205 @@
+@extends('layouts.editor')
+
+@section('content')
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Tambah Berita Baru</h1>
+        <a href="{{ route('editor.news.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+            <i class="fas fa-arrow-left mr-2"></i>Kembali
+        </a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <form action="{{ route('editor.news.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+
+            <!-- Title -->
+            <div class="mb-6">
+                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                    Judul Berita <span class="text-red-500">*</span>
+                </label>
+                <input type="text" 
+                       name="title" 
+                       id="title" 
+                       value="{{ old('title') }}"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('title') border-red-500 @enderror"
+                       placeholder="Masukkan judul berita"
+                       required>
+                @error('title')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Content with Text Editor -->
+            <div class="mb-6">
+                <label for="content" class="block text-sm font-medium text-gray-700 mb-2">
+                    Konten Berita <span class="text-red-500">*</span>
+                </label>
+                <textarea name="content" 
+                          id="content" 
+                          rows="15"
+                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('content') border-red-500 @enderror">{{ old('content') }}</textarea>
+                @error('content')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-6">
+                <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                    Gambar Berita
+                </label>
+                <input type="file" 
+                       name="image" 
+                       id="image" 
+                       accept="image/*"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('image') border-red-500 @enderror"
+                       onchange="previewImage(event)">
+                @error('image')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+                <p class="mt-1 text-sm text-gray-500">Format: JPG, PNG, GIF. Maksimal 2MB.</p>
+                
+                <!-- Image Preview -->
+                <div id="imagePreview" class="mt-4 hidden">
+                    <img id="preview" src="" alt="Preview" class="max-w-md h-auto rounded-lg shadow-md">
+                </div>
+            </div>
+
+            <!-- Status Selection -->
+            <div class="mb-6">
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                    Status <span class="text-red-500">*</span>
+                </label>
+                <select name="status" 
+                        id="status" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        onchange="togglePublishDate()"
+                        required>
+                    <option value="draft" {{ old('status', 'publish') == 'draft' ? 'selected' : '' }}>Draft</option>
+                    <option value="publish" {{ old('status', 'publish') == 'publish' ? 'selected' : '' }}>Publish</option>
+                </select>
+                <p class="mt-1 text-sm text-gray-500">Pilih Draft untuk menyimpan tanpa publish, atau Publish untuk langsung publish.</p>
+            </div>
+
+            <!-- Published Date (shown only when Publish is selected) -->
+            <div class="mb-6" id="publishDateContainer">
+                <label for="published_at" class="block text-sm font-medium text-gray-700 mb-2">
+                    Tanggal Publish
+                </label>
+                <input type="datetime-local" 
+                       name="published_at" 
+                       id="published_at" 
+                       value="{{ old('published_at') }}"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('published_at') border-red-500 @enderror">
+                @error('published_at')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+                <p class="mt-1 text-sm text-gray-500">Kosongkan untuk publish sekarang, atau set tanggal untuk schedule publish.</p>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end space-x-3">
+                <a href="{{ route('editor.news.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded-lg transition duration-200">
+                    Batal
+                </a>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200">
+                    <i class="fas fa-save mr-2"></i>Simpan Berita
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('scripts')
+<!-- TinyMCE -->
+<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+<script>
+    console.log('Script loaded');
+    
+    // Initialize TinyMCE
+    tinymce.init({
+        license_key: 'gpl',
+        selector: '#content',
+        height: 500,
+        menubar: true,
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+            'bold italic forecolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+        language: 'id',
+        branding: false,
+        promotion: false,
+        setup: function(editor) {
+            editor.on('init', function() {
+                console.log('TinyMCE initialized');
+            });
+        }
+    });
+
+    // DOM is already ready (script runs at end of body)
+    console.log('Attaching form handler...');
+    
+    const form = document.querySelector('form');
+    if (form) {
+        console.log('Form found, attaching submit handler');
+        
+        form.addEventListener('submit', function(e) {
+            console.log('Form submitting...');
+            
+            // Sync TinyMCE content if initialized
+            if (typeof tinymce !== 'undefined' && tinymce.get('content')) {
+                tinymce.triggerSave();
+                console.log('TinyMCE content synced');
+            }
+            
+            // Let form submit normally
+            return true;
+        });
+    } else {
+        console.error('Form not found!');
+    }
+
+    // Image Preview
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('preview');
+        const previewContainer = document.getElementById('imagePreview');
+        
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+            }
+            
+            reader.readAsDataURL(file);
+        } else {
+            previewContainer.classList.add('hidden');
+        }
+    }
+
+    // Toggle publish date field based on status selection
+    function togglePublishDate() {
+        const status = document.getElementById('status').value;
+        const publishDateContainer = document.getElementById('publishDateContainer');
+        
+        if (status === 'publish') {
+            publishDateContainer.style.display = 'block';
+        } else {
+            publishDateContainer.style.display = 'none';
+        }
+    }
+
+    // Initialize on page load
+    togglePublishDate();
+</script>
+@endpush
+@endsection

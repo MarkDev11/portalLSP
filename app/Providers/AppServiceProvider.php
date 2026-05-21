@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use App\Models\Setting;
+use App\Models\Kontak;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Share settings and kontak with all views
+        View::composer('*', function ($view) {
+            $setting = Setting::getSettings();
+            $kontak = Kontak::first();
+            $view->with('setting', $setting);
+            $view->with('kontak', $kontak);
+        });
     }
 }
