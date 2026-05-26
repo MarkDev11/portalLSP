@@ -79,18 +79,6 @@ Route::get('/admin/tentang-kami', [TentangKamiController::class, 'index'])
     ->middleware(['auth', 'admin'])
     ->name('admin.tentang-kami.index');
 
-Route::get('/admin/tentang-kami/create', [TentangKamiController::class, 'create'])
-    ->middleware(['auth', 'admin'])
-    ->name('admin.tentang-kami.create');
-
-Route::post('/admin/tentang-kami', [TentangKamiController::class, 'store'])
-    ->middleware(['auth', 'admin'])
-    ->name('admin.tentang-kami.store');
-
-Route::get('/admin/tentang-kami/edit', [TentangKamiController::class, 'edit'])
-    ->middleware(['auth', 'admin'])
-    ->name('admin.tentang-kami.edit');
-
 Route::put('/admin/tentang-kami', [TentangKamiController::class, 'update'])
     ->middleware(['auth', 'admin'])
     ->name('admin.tentang-kami.update');
