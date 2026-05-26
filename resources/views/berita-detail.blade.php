@@ -43,7 +43,7 @@
                     @endif
                     
                     <!-- Article Content -->
-                    <div class="reveal article-body">
+                    <div class="reveal prose prose-lg max-w-none">
                         {!! $news->content !!}
                     </div>
                     

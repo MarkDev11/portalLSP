@@ -32,17 +32,11 @@ class Setting extends Model
     ];
 
     /**
-     * Get the single settings record (singleton pattern)
+     * Get the single settings record (singleton pattern).
+     * Returns null when no row exists — views handle fallback via $setting?->... ?? '...'.
      */
     public static function getSettings()
     {
-        return self::first() ?? self::create([
-            'site_name' => 'UBSI Portal LSP',
-            'header_color' => '#1e293b',
-            'footer_color' => '#1e293b',
-            'accent_color' => '#2563eb',
-            'sidebar_color' => '#0f172a',
-            'logo_type' => 'long',
-        ]);
+        return self::first();
     }
 }

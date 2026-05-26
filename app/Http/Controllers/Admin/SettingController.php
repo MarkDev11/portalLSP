@@ -15,7 +15,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $setting = Setting::getSettings();
+        $setting = Setting::firstOrNew();
         return view('admin.settings.index', compact('setting'));
     }
 
@@ -24,7 +24,7 @@ class SettingController extends Controller
      */
     public function update(Request $request)
     {
-        $setting = Setting::getSettings();
+        $setting = Setting::firstOrNew();
 
         // Validation
         $validated = $request->validate([
@@ -86,7 +86,7 @@ class SettingController extends Controller
         }
 
         // Update settings
-        $setting->update($validated);
+        $setting->fill($validated)->save();
 
         return redirect()->route('admin.settings.index')
             ->with('success', 'Settings updated successfully!');

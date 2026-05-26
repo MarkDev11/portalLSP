@@ -24,7 +24,7 @@
                     <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-accent);">About Us</p>
                     <h2 class="text-3xl md:text-[2.5rem] font-bold text-ink-900 heading-tight display mb-6">{{ $tentangKami?->about_title ?? 'Tentang LSP UBSI' }}</h2>
                     <div class="line-accent mb-8"></div>
-                    <div class="space-y-4 text-ink-500 leading-relaxed">
+                    <div class="space-y-4 text-ink-500 leading-relaxed prose prose-ink max-w-none">
                         {!! $tentangKami?->about_content ?? '<p>Lembaga Sertifikasi Profesi Universitas Bina Sarana Informatika adalah lembaga yang berfokus pada sertifikasi profesi di bidang teknologi informasi.</p>' !!}
                     </div>
                 </div>
@@ -77,9 +77,9 @@
                         </div>
                         <div>
                             <h3 class="text-xl font-bold text-ink-900 mb-4">Visi</h3>
-                            <p class="text-ink-500 leading-relaxed">
+                            <div class="text-ink-500 leading-relaxed prose prose-ink max-w-none">
                                 {!! $tentangKami?->visi_content ?? '<p>Menjadi lembaga sertifikasi profesi yang terpercaya dan unggul di Indonesia.</p>' !!}
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>

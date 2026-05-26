@@ -3,56 +3,45 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Admin Dashboard') - {{ $setting->site_name ?? 'Portal LSP UBSI' }}</title>
-    
+    <title>@yield('title', 'Admin Dashboard') - {{ $setting?->site_name ?? 'Portal LSP UBSI' }}</title>
+
     <!-- Favicon -->
-    @if($setting->favicon_path)
+    @if($setting?->favicon_path)
         <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $setting->favicon_path) }}">
     @else
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     @endif
-    
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:300,400,500,600,700,800&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Figtree', 'system-ui', 'sans-serif'],
-                    },
-                    colors: {
-                        ink: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a' },
-                        accent: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' }
-                    }
-                }
-            }
-        }
-    </script>
+
     <style>
-        *, *::before, *::after { box-sizing: border-box; }
-        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        .heading-tight { letter-spacing: -0.02em; line-height: 1.15; }
+        :root {
+            --color-accent: {{ $setting?->accent_color ?? '#2563eb' }};
+            --color-sidebar: {{ $setting?->sidebar_color ?? '#0f172a' }};
+        }
     </style>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     @stack('styles')
 </head>
 <body class="bg-ink-50 text-ink-700 font-sans">
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" style="background-color: {{ $setting->sidebar_color ?? '#0f172a' }}">
+    <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" style="background-color: {{ $setting?->sidebar_color ?? '#0f172a' }}">
         <div class="h-full px-4 py-6 overflow-y-auto">
             <!-- Logo -->
             <div class="flex items-center gap-2.5 mb-8 px-2">
-                @if($setting->logo_type === 'long' && $setting->logo_long_path)
+                @if($setting?->logo_type === 'long' && $setting?->logo_long_path)
                     <!-- Long Logo with Text -->
-                    <img src="{{ asset('storage/' . $setting->logo_long_path) }}" 
-                         alt="{{ $setting->site_name }}" 
+                    <img src="{{ asset('storage/' . $setting->logo_long_path) }}"
+                         alt="{{ $setting->site_name }}"
                          class="h-10 object-contain">
-                @elseif($setting->logo_type === 'icon' && $setting->logo_icon_path)
+                @elseif($setting?->logo_type === 'icon' && $setting?->logo_icon_path)
                     <!-- Icon Logo Only -->
-                    <img src="{{ asset('storage/' . $setting->logo_icon_path) }}" 
-                         alt="{{ $setting->site_name }}" 
+                    <img src="{{ asset('storage/' . $setting->logo_icon_path) }}"
+                         alt="{{ $setting->site_name }}"
                          class="h-8 w-8 object-contain">
                     <div>
                         <span class="text-sm font-bold text-white block leading-none">{{ $setting->site_name }}</span>
@@ -60,13 +49,13 @@
                     </div>
                 @else
                     <!-- Fallback: Default SVG Logo -->
-                    <div class="w-8 h-8 flex items-center justify-center" style="background-color: {{ $setting->accent_color ?? '#2563eb' }}">
+                    <div class="w-8 h-8 flex items-center justify-center" style="background-color: {{ $setting?->accent_color ?? '#2563eb' }}">
                         <svg viewBox="0 0 316 316" class="w-5 h-5 text-white" fill="currentColor">
                             <path d="M305.8 81.125L251.32 48.275c-1.35-.78-3.01-.78-4.36 0L194.51 78.475l-6.56 3.79v57.36l-43.71 25.17V52.575l-6.56-3.79L93.99 18.585c-1.35-.78-3.01-.78-4.36 0L37.18 48.785l-6.56 3.79v179.66l6.56 3.79 104.91 60.4c.23.13.48.21.72.29.11.04.22.11.35.13.37.1.74.15 1.12.15.38 0 .75-.05 1.12-.15.1-.03.19-.09.29-.12.26-.09.52-.18.76-.31l104.91-60.4 6.56-3.79v-57.36l6.56-3.79 50.26-28.94 6.56-3.79V85.755l-6.56-3.63zM144.2 227.205l-43.63-25.69 45.82-26.38 50.27-28.94 43.67 25.14-32.04 18.29-64.09 36.58z"/>
                         </svg>
                     </div>
                     <div>
-                        <span class="text-sm font-bold text-white block leading-none">{{ $setting->site_name }}</span>
+                        <span class="text-sm font-bold text-white block leading-none">{{ $setting?->site_name ?? 'Portal LSP UBSI' }}</span>
                         <span class="text-[10px] font-semibold text-accent-400 uppercase tracking-wider mt-0.5 block">Admin Panel</span>
                     </div>
                 @endif

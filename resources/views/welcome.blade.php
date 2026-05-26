@@ -70,7 +70,7 @@
                     <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-accent);">{{ $landingPage?->tentang_tagline ?? 'Tentang Kami' }}</p>
                     <h2 class="text-3xl md:text-[2.5rem] font-bold text-ink-900 heading-tight display mb-6">{!! preg_replace('/<span class="text-accent-600">/', '<span style="color: var(--color-accent);">', $landingPage?->tentang_title ?? 'Membangun Kompetensi <span style="color: var(--color-accent);">Profesional Indonesia</span>') !!}</h2>
                     <div class="line-accent mb-8"></div>
-                    <div class="space-y-4 text-ink-500 leading-relaxed">
+                    <div class="space-y-4 text-ink-500 leading-relaxed prose prose-ink max-w-none">
                         {!! $landingPage?->tentang_content ?? '<p>LSP UBSI adalah lembaga sertifikasi profesi yang berkomitmen menghasilkan tenaga kerja Indonesia yang kompeten dan berdaya saing tinggi di era digital.</p><p>Kami menyediakan layanan sertifikasi kompetensi berbasis Standar Kompetensi Kerja Nasional Indonesia (SKKNI) yang diakui secara nasional.</p>' !!}
                     </div>
                     
