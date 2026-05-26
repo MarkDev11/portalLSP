@@ -77,36 +77,52 @@
                 </div>
             </div>
 
-            <!-- Status Selection -->
+            <!-- Publish Mode -->
             <div class="mb-6">
-                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
-                    Status <span class="text-red-500">*</span>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Publikasi <span class="text-red-500">*</span>
                 </label>
-                <select name="status" 
-                        id="status" 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        onchange="togglePublishDate()"
-                        required>
-                    <option value="draft" {{ old('status', ($news->published_at ? 'publish' : 'draft')) == 'draft' ? 'selected' : '' }}>Draft</option>
-                    <option value="publish" {{ old('status', ($news->published_at ? 'publish' : 'draft')) == 'publish' ? 'selected' : '' }}>Publish</option>
-                </select>
-                <p class="mt-1 text-sm text-gray-500">Pilih Draft untuk menyimpan tanpa publish, atau Publish untuk langsung publish.</p>
+                <div class="space-y-2">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="radio" name="publish_mode" value="now"
+                               {{ old('publish_mode', 'schedule') === 'now' ? 'checked' : '' }}
+                               onchange="togglePublishDate()"
+                               class="mt-1">
+                        <span>
+                            <span class="font-medium text-gray-800">Langsung publish</span>
+                            <span class="block text-sm text-gray-500">Berita langsung tayang setelah disimpan.</span>
+                        </span>
+                    </label>
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="radio" name="publish_mode" value="schedule"
+                               {{ old('publish_mode', 'schedule') === 'schedule' ? 'checked' : '' }}
+                               onchange="togglePublishDate()"
+                               class="mt-1">
+                        <span>
+                            <span class="font-medium text-gray-800">Set tanggal</span>
+                            <span class="block text-sm text-gray-500">Pilih tanggal & waktu publish. Kosongkan untuk simpan sebagai draft.</span>
+                        </span>
+                    </label>
+                </div>
+                @error('publish_mode')
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                @enderror
             </div>
 
-            <!-- Published Date (shown only when Publish is selected) -->
+            <!-- Published Date (shown only when "Set tanggal" is selected) -->
             <div class="mb-6" id="publishDateContainer">
                 <label for="published_at" class="block text-sm font-medium text-gray-700 mb-2">
                     Tanggal Publish
                 </label>
-                <input type="datetime-local" 
-                       name="published_at" 
-                       id="published_at" 
+                <input type="datetime-local"
+                       name="published_at"
+                       id="published_at"
                        value="{{ old('published_at', $news->published_at ? $news->published_at->format('Y-m-d\TH:i') : '') }}"
                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('published_at') border-red-500 @enderror">
                 @error('published_at')
                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                 @enderror
-                <p class="mt-1 text-sm text-gray-500">Kosongkan untuk publish sekarang, atau set tanggal untuk schedule publish.</p>
+                <p class="mt-1 text-sm text-gray-500">Kosongkan untuk simpan sebagai draft.</p>
             </div>
 
             <!-- Submit Button -->
@@ -197,12 +213,12 @@
         }
     }
 
-    // Toggle publish date field based on status selection
+    // Toggle publish date field based on radio selection
     function togglePublishDate() {
-        const status = document.getElementById('status').value;
+        const checked = document.querySelector('input[name="publish_mode"]:checked');
         const publishDateContainer = document.getElementById('publishDateContainer');
-        
-        if (status === 'publish') {
+
+        if (checked && checked.value === 'schedule') {
             publishDateContainer.style.display = 'block';
         } else {
             publishDateContainer.style.display = 'none';

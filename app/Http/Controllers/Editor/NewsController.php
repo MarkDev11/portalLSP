@@ -78,26 +78,20 @@ class NewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:draft,publish',
+            'publish_mode' => 'required|in:now,schedule',
             'published_at' => 'nullable|date',
         ]);
 
         // Generate slug from title
         $validated['slug'] = Str::slug($validated['title']);
 
-        // Handle status and published_at
-        if ($validated['status'] === 'publish') {
-            // If publish selected but no date set, publish now
-            if (empty($validated['published_at'])) {
-                $validated['published_at'] = now();
-            }
+        // Map publish_mode to published_at
+        if ($validated['publish_mode'] === 'now') {
+            $validated['published_at'] = now();
         } else {
-            // If draft, clear published_at
-            $validated['published_at'] = null;
+            $validated['published_at'] = $validated['published_at'] ?? null;
         }
-        
-        // Remove status from validated data (not a database column)
-        unset($validated['status']);
+        unset($validated['publish_mode']);
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -137,26 +131,20 @@ class NewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:draft,publish',
+            'publish_mode' => 'required|in:now,schedule',
             'published_at' => 'nullable|date',
         ]);
 
         // Generate slug from title
         $validated['slug'] = Str::slug($validated['title']);
 
-        // Handle status and published_at
-        if ($validated['status'] === 'publish') {
-            // If publish selected but no date set, publish now
-            if (empty($validated['published_at'])) {
-                $validated['published_at'] = now();
-            }
+        // Map publish_mode to published_at
+        if ($validated['publish_mode'] === 'now') {
+            $validated['published_at'] = now();
         } else {
-            // If draft, clear published_at
-            $validated['published_at'] = null;
+            $validated['published_at'] = $validated['published_at'] ?? null;
         }
-        
-        // Remove status from validated data (not a database column)
-        unset($validated['status']);
+        unset($validated['publish_mode']);
 
         // Handle image upload
         if ($request->hasFile('image')) {
