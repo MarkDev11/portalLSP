@@ -5,19 +5,19 @@
             
             <!-- Logo -->
             <a href="/" class="flex items-center gap-3 group">
-                @if($setting->logo_type === 'long' && $setting->logo_long_path)
+                @if($setting?->logo_type === 'long' && $setting?->logo_long_path)
                     <!-- Long Logo with Text -->
-                    <img src="{{ asset('storage/' . $setting->logo_long_path) }}" 
-                         alt="{{ $setting->site_name }}" 
+                    <img src="{{ asset('storage/' . $setting->logo_long_path) }}"
+                         alt="{{ $setting?->site_name ?? 'Portal LSP UBSI' }}"
                          class="h-10 object-contain">
-                @elseif($setting->logo_type === 'icon' && $setting->logo_icon_path)
+                @elseif($setting?->logo_type === 'icon' && $setting?->logo_icon_path)
                     <!-- Icon Logo + Text -->
-                    <img src="{{ asset('storage/' . $setting->logo_icon_path) }}" 
-                         alt="{{ $setting->site_name }}" 
+                    <img src="{{ asset('storage/' . $setting->logo_icon_path) }}"
+                         alt="{{ $setting?->site_name ?? 'Portal LSP UBSI' }}"
                          class="h-10 w-10 object-contain">
                     <div>
-                        <span class="text-lg font-bold text-ink-900 block leading-none">{{ $setting->site_name }}</span>
-                        <span class="text-xs text-ink-500">{{ $setting->site_tagline ?? 'Lembaga Sertifikasi Profesi' }}</span>
+                        <span class="text-lg font-bold text-ink-900 block leading-none">{{ $setting?->site_name ?? 'Portal LSP UBSI' }}</span>
+                        <span class="text-xs text-ink-500">{{ $setting?->site_tagline ?? 'Lembaga Sertifikasi Profesi' }}</span>
                     </div>
                 @else
                     <!-- Fallback: Default SVG Logo -->
@@ -27,8 +27,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="text-lg font-bold text-ink-900 block leading-none">{{ $setting->site_name }}</span>
-                        <span class="text-xs text-ink-500">{{ $setting->site_tagline ?? 'Lembaga Sertifikasi Profesi' }}</span>
+                        <span class="text-lg font-bold text-ink-900 block leading-none">{{ $setting?->site_name ?? 'Portal LSP UBSI' }}</span>
+                        <span class="text-xs text-ink-500">{{ $setting?->site_tagline ?? 'Lembaga Sertifikasi Profesi' }}</span>
                     </div>
                 @endif
             </a>

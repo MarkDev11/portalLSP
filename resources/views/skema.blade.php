@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Daftar Skema - ' . ($setting->site_name ?? 'Portal LSP UBSI'))
+@section('title', 'Daftar Skema - ' . ($setting?->site_name ?? 'Portal LSP UBSI'))
 
 @section('content')
 

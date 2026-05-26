@@ -6,9 +6,9 @@
             <!-- Brand Column -->
             <div>
                 <div class="flex items-center gap-2 mb-4">
-                    @if($setting->logo_icon_path)
-                        <img src="{{ asset('storage/' . $setting->logo_icon_path) }}" 
-                             alt="{{ $setting->site_name }}" 
+                    @if($setting?->logo_icon_path)
+                        <img src="{{ asset('storage/' . $setting->logo_icon_path) }}"
+                             alt="{{ $setting?->site_name ?? 'Portal LSP UBSI' }}"
                              class="h-8 w-8 object-contain">
                     @else
                         <div class="w-8 h-8 flex items-center justify-center rounded" style="background-color: var(--color-accent);">
@@ -17,10 +17,10 @@
                             </svg>
                         </div>
                     @endif
-                    <span class="text-lg font-bold text-white">{{ $setting->site_name }}</span>
+                    <span class="text-lg font-bold text-white">{{ $setting?->site_name ?? 'Portal LSP UBSI' }}</span>
                 </div>
-                <p class="text-sm mb-3">{{ $setting->site_tagline ?? 'Lembaga Sertifikasi Profesi' }}</p>
-                <p class="text-sm text-ink-500">{{ $setting->footer_description ?? 'Lembaga Sertifikasi Profesi yang terpercaya untuk mengembangkan kompetensi profesional Anda.' }}</p>
+                <p class="text-sm mb-3">{{ $setting?->site_tagline ?? 'Lembaga Sertifikasi Profesi' }}</p>
+                <p class="text-sm text-ink-500">{{ $setting?->footer_description ?? 'Lembaga Sertifikasi Profesi yang terpercaya untuk mengembangkan kompetensi profesional Anda.' }}</p>
             </div>
             
             <!-- Navigasi Column -->
@@ -39,30 +39,30 @@
             <div>
                 <h4 class="text-white font-semibold mb-4">Layanan</h4>
                 <ul class="space-y-2">
-                    @if($setting->service_1_name)
+                    @if($setting?->service_1_name)
                         <li>
-                            <a href="{{ $setting->service_1_url ?? '#' }}" class="text-sm hover:text-white transition-colors">
+                            <a href="{{ $setting?->service_1_url ?? '#' }}" class="text-sm hover:text-white transition-colors">
                                 {{ $setting->service_1_name }}
                             </a>
                         </li>
                     @endif
-                    @if($setting->service_2_name)
+                    @if($setting?->service_2_name)
                         <li>
-                            <a href="{{ $setting->service_2_url ?? '#' }}" class="text-sm hover:text-white transition-colors">
+                            <a href="{{ $setting?->service_2_url ?? '#' }}" class="text-sm hover:text-white transition-colors">
                                 {{ $setting->service_2_name }}
                             </a>
                         </li>
                     @endif
-                    @if($setting->service_3_name)
+                    @if($setting?->service_3_name)
                         <li>
-                            <a href="{{ $setting->service_3_url ?? '#' }}" class="text-sm hover:text-white transition-colors">
+                            <a href="{{ $setting?->service_3_url ?? '#' }}" class="text-sm hover:text-white transition-colors">
                                 {{ $setting->service_3_name }}
                             </a>
                         </li>
                     @endif
-                    @if($setting->service_4_name)
+                    @if($setting?->service_4_name)
                         <li>
-                            <a href="{{ $setting->service_4_url ?? '#' }}" class="text-sm hover:text-white transition-colors">
+                            <a href="{{ $setting?->service_4_url ?? '#' }}" class="text-sm hover:text-white transition-colors">
                                 {{ $setting->service_4_name }}
                             </a>
                         </li>
@@ -147,7 +147,7 @@
     <div class="border-t border-ink-800">
         <div class="container mx-auto px-4 lg:px-8 py-6">
             <p class="text-center text-sm text-ink-500">
-                © {{ date('Y') }} {{ $setting->site_name }}. Hak Cipta Dilindungi.
+                © {{ date('Y') }} {{ $setting?->site_name ?? 'Portal LSP UBSI' }}. Hak Cipta Dilindungi.
             </p>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Berita - ' . ($setting->site_name ?? 'Portal LSP UBSI'))
+@section('title', 'Berita - ' . ($setting?->site_name ?? 'Portal LSP UBSI'))
 
 @section('content')
 

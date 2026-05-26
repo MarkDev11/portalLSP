@@ -22,10 +22,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Share settings and kontak with all views
+        // Share settings and kontak with all views (safe against DB failures)
         View::composer('*', function ($view) {
-            $setting = Setting::getSettings();
-            $kontak = Kontak::first();
+            try {
+                $setting = Setting::getSettings();
+            } catch (\Throwable $e) {
+                $setting = null;
+            }
+            try {
+                $kontak = Kontak::first();
+            } catch (\Throwable $e) {
+                $kontak = null;
+            }
             $view->with('setting', $setting);
             $view->with('kontak', $kontak);
         });

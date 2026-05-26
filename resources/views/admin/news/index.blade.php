@@ -82,7 +82,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">
                                 Belum ada berita. <a href="{{ route('admin.news.create') }}" class="text-blue-600 hover:text-blue-800">Tambah berita pertama</a>
                             </td>
                         </tr>

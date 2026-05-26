@@ -79,11 +79,11 @@ class NewsController extends Controller
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'publish_mode' => 'required|in:now,schedule',
-            'published_at' => 'nullable|date',
+            'published_at' => 'nullable|date_format:Y-m-d\TH:i',
         ]);
 
-        // Generate slug from title
-        $validated['slug'] = Str::slug($validated['title']);
+        // Generate slug from title (unique)
+        $validated['slug'] = $this->generateUniqueSlug($validated['title']);
 
         // Map publish_mode to published_at
         if ($validated['publish_mode'] === 'now') {
@@ -119,6 +119,10 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
+        if ($news->created_by !== auth()->id()) {
+            abort(403, 'Anda tidak memiliki akses ke berita ini.');
+        }
+
         return view('editor.news.edit', compact('news'));
     }
 
@@ -127,16 +131,20 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
+        if ($news->created_by !== auth()->id()) {
+            abort(403, 'Anda tidak memiliki akses ke berita ini.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'publish_mode' => 'required|in:now,schedule',
-            'published_at' => 'nullable|date',
+            'published_at' => 'nullable|date_format:Y-m-d\TH:i',
         ]);
 
-        // Generate slug from title
-        $validated['slug'] = Str::slug($validated['title']);
+        // Generate slug from title (unique)
+        $validated['slug'] = $this->generateUniqueSlug($validated['title'], $news->id);
 
         // Map publish_mode to published_at
         if ($validated['publish_mode'] === 'now') {
@@ -168,6 +176,10 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        if ($news->created_by !== auth()->id()) {
+            abort(403, 'Anda tidak memiliki akses ke berita ini.');
+        }
+
         // Delete image if exists
         if ($news->image && Storage::disk('public')->exists($news->image)) {
             Storage::disk('public')->delete($news->image);
@@ -179,6 +191,27 @@ class NewsController extends Controller
     }
 
     /**
+     * Generate a unique slug, appending -1, -2, ... on collision.
+     */
+    private function generateUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
+        $base = Str::slug($title);
+        $slug = $base;
+        $i = 1;
+
+        while (true) {
+            $query = News::where('slug', $slug);
+            if ($ignoreId) {
+                $query->where('id', '!=', $ignoreId);
+            }
+            if (!$query->exists()) {
+                return $slug;
+            }
+            $slug = $base . '-' . $i++;
+        }
+    }
+
+    /**
      * Resize and compress image
      */
     private function resizeAndCompressImage($file, $folder, $maxWidth = 1920, $quality = 90)
@@ -187,13 +220,16 @@ class NewsController extends Controller
         $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
         $imagePath = storage_path('app/public/' . $folder . '/' . $imageName);
 
-        // Create directory if not exists
-        if (!file_exists(storage_path('app/public/' . $folder))) {
-            mkdir(storage_path('app/public/' . $folder), 0755, true);
-        }
+        // Create directory if not exists (idempotent, no race)
+        Storage::disk('public')->makeDirectory($folder);
 
-        // Get image info
-        $imageInfo = getimagesize($image->getRealPath());
+        // Get image info (guard against corrupt/non-image files)
+        $imageInfo = @getimagesize($image->getRealPath());
+        if (!$imageInfo) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'image' => 'File gambar tidak valid atau rusak.',
+            ]);
+        }
         $imageType = $imageInfo[2];
 
         // Create image resource based on type

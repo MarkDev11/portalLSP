@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', ($setting->site_name ?? 'Portal LSP UBSI') . ' - Lembaga Sertifikasi Profesi')
+@section('title', ($setting?->site_name ?? 'Portal LSP UBSI') . ' - Lembaga Sertifikasi Profesi')
 
 @section('content')
 
@@ -133,10 +133,10 @@
     <section id="skema" class="py-24 md:py-32 bg-ink-50 bg-grid">
         <div class="max-w-6xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-accent);">{{ $landingPage->skema_tagline ?? 'Layanan Kami' }}</p>
-                <h2 class="text-3xl md:text-[2.5rem] font-bold text-ink-900 heading-tight display">{{ $landingPage->skema_title ?? 'Daftar Skema Sertifikasi' }}</h2>
+                <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-accent);">{{ $landingPage?->skema_tagline ?? 'Layanan Kami' }}</p>
+                <h2 class="text-3xl md:text-[2.5rem] font-bold text-ink-900 heading-tight display">{{ $landingPage?->skema_title ?? 'Daftar Skema Sertifikasi' }}</h2>
                 <div class="line-accent mx-auto mt-6"></div>
-                <p class="text-ink-500 mt-6 max-w-lg mx-auto leading-relaxed">{!! $landingPage->skema_description ?? 'Pilih skema sertifikasi yang sesuai dengan bidang kompetensi Anda untuk meningkatkan daya saing di dunia kerja.' !!}</p>
+                <p class="text-ink-500 mt-6 max-w-lg mx-auto leading-relaxed">{!! $landingPage?->skema_description ?? 'Pilih skema sertifikasi yang sesuai dengan bidang kompetensi Anda untuk meningkatkan daya saing di dunia kerja.' !!}</p>
             </div>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-ink-200 border border-ink-200">
@@ -219,8 +219,8 @@
     <section id="berita" class="py-24 md:py-32 bg-white">
         <div class="max-w-6xl mx-auto px-6 lg:px-8">
             <div class="mb-16 reveal">
-                <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-accent);">{{ $landingPage->berita_tagline ?? 'Update Terbaru' }}</p>
-                <h2 class="text-3xl md:text-[2.5rem] font-bold text-ink-900 heading-tight display">{{ $landingPage->berita_title ?? 'Berita & Informasi' }}</h2>
+                <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-accent);">{{ $landingPage?->berita_tagline ?? 'Update Terbaru' }}</p>
+                <h2 class="text-3xl md:text-[2.5rem] font-bold text-ink-900 heading-tight display">{{ $landingPage?->berita_title ?? 'Berita & Informasi' }}</h2>
                 <div class="line-accent mt-6"></div>
             </div>
             
@@ -318,8 +318,8 @@
     <section id="kontak" class="py-24 md:py-32 bg-ink-50 bg-grid">
         <div class="max-w-6xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-accent);">{{ $landingPage->kontak_tagline ?? 'Hubungi Kami' }}</p>
-                <h2 class="text-3xl md:text-[2.5rem] font-bold text-ink-900 heading-tight display">{{ $landingPage->kontak_title ?? 'Kontak & Lokasi' }}</h2>
+                <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-accent);">{{ $landingPage?->kontak_tagline ?? 'Hubungi Kami' }}</p>
+                <h2 class="text-3xl md:text-[2.5rem] font-bold text-ink-900 heading-tight display">{{ $landingPage?->kontak_title ?? 'Kontak & Lokasi' }}</h2>
                 <div class="line-accent mx-auto mt-6"></div>
             </div>
             
@@ -336,7 +336,7 @@
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-semibold text-ink-900 mb-1">Alamat</h4>
-                                    <p class="text-sm text-ink-500 leading-relaxed">{{ $landingPage->kontak_alamat ?? 'Jl. Kramat Raya No.98, RT.2/RW.9, Kwitang, Kec. Senen, Kota Jakarta Pusat, DKI Jakarta 10450' }}</p>
+                                    <p class="text-sm text-ink-500 leading-relaxed">{{ $landingPage?->kontak_alamat ?? 'Jl. Kramat Raya No.98, RT.2/RW.9, Kwitang, Kec. Senen, Kota Jakarta Pusat, DKI Jakarta 10450' }}</p>
                                 </div>
                             </div>
                             
@@ -346,8 +346,8 @@
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-semibold text-ink-900 mb-1">Email</h4>
-                                    <p class="text-sm text-ink-500">{{ $landingPage->kontak_email_1 ?? 'lsp@ubsi.ac.id' }}</p>
-                                    <p class="text-sm text-ink-500">{{ $landingPage->kontak_email_2 ?? 'info.lsp@ubsi.ac.id' }}</p>
+                                    <p class="text-sm text-ink-500">{{ $landingPage?->kontak_email_1 ?? 'lsp@ubsi.ac.id' }}</p>
+                                    <p class="text-sm text-ink-500">{{ $landingPage?->kontak_email_2 ?? 'info.lsp@ubsi.ac.id' }}</p>
                                 </div>
                             </div>
                             
@@ -357,8 +357,8 @@
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-semibold text-ink-900 mb-1">Telepon</h4>
-                                    <p class="text-sm text-ink-500">{{ $landingPage->kontak_telepon_1 ?? '(021) 2123-4567' }}</p>
-                                    <p class="text-sm text-ink-500">{{ $landingPage->kontak_telepon_2 ?? '(021) 2123-4568' }}</p>
+                                    <p class="text-sm text-ink-500">{{ $landingPage?->kontak_telepon_1 ?? '(021) 2123-4567' }}</p>
+                                    <p class="text-sm text-ink-500">{{ $landingPage?->kontak_telepon_2 ?? '(021) 2123-4568' }}</p>
                                 </div>
                             </div>
                             
@@ -368,8 +368,8 @@
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-semibold text-ink-900 mb-1">Jam Operasional</h4>
-                                    <p class="text-sm text-ink-500">{{ $landingPage->kontak_jam_senin_jumat ?? 'Senin - Jumat: 08.00 - 16.00 WIB' }}</p>
-                                    <p class="text-sm text-ink-500">{{ $landingPage->kontak_jam_sabtu ?? 'Sabtu: 08.00 - 12.00 WIB' }}</p>
+                                    <p class="text-sm text-ink-500">{{ $landingPage?->kontak_jam_senin_jumat ?? 'Senin - Jumat: 08.00 - 16.00 WIB' }}</p>
+                                    <p class="text-sm text-ink-500">{{ $landingPage?->kontak_jam_sabtu ?? 'Sabtu: 08.00 - 12.00 WIB' }}</p>
                                 </div>
                             </div>
                         </div>

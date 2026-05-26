@@ -35,7 +35,9 @@ Route::get('/kontak', function () {
     return view('kontak', compact('kontak', 'landingPage'));
 })->name('kontak');
 
-Route::post('/kontak', [ContactMessageController::class, 'store'])->name('kontak.store');
+Route::post('/kontak', [ContactMessageController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('kontak.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
